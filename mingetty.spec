@@ -1,12 +1,14 @@
 Summary:	a compact, console-only getty
 Summary(de):	ein kompaktes, auf Konsolen beschränktes GETTY 
+Summary(es):	Un getty compacto, que sólo funciona en la consola
 Summary(fr):	getty compact, uniquement pour la console
 Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
+Summary(pt_BR):	Um getty compacto, que só funciona na console
 Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	18
+Release:	19
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
@@ -18,6 +20,9 @@ Patch3:		%{name}-remote.patch
 Patch4:		%{name}-fgetc.patch
 Patch5:		%{name}-autologin.patch
 Patch6:		%{name}-autologin-remove-restrictions.patch
+Patch7:		%{name}-syslog.patch
+Patch8:		%{name}-manpage.patch
+Patch9:		%{name}-s390.patch
 Requires:	login
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -33,6 +38,11 @@ mingetty von Florian La Roche ist ein kleiner, minimalistischer getty
 für die Verwendung an virtuellen Konsolen. Er ist nicht für serielle
 Leitungen geeignet (der Autor empfiehlt für diesen Zweck`mgetty').
 
+%description -l es
+mingetty, de Florian La Roche, es un ligero y pequeño getty para usar
+solamente en pantallas virtuales. Mingetty no es apropiado para líneas
+seriales (el autor recomienda el uso de "mgetty" para este propósito.
+
 %description -l fr
 mingetty, de Florian La Roche, est un getty réduit et allégé pour
 console virtuelle uniquement. mingetty n'est pas adapté pour les
@@ -41,6 +51,11 @@ lignes série (l'auteur recommande d'utiliser `mgetty' pour cet usage).
 %description -l pl 
 Mingetty - Floriana La Roche, jest minimalnym getty do u¿ytku na
 wirtualnej konsoli. Mingetty nie obs³uguje portów szeregowych.
+
+%description -l pt_BR
+mingetty, de Florian La Roche, é um leve e pequeno getty para usar
+somente em consoles virtuais. Mingetty não é apropriado para linhas
+seriais (o autor recomenda o uso de "mgetty" para este propósito.
 
 %description -l tr
 Bu pakette seri baðlantý üzerinden sisteme giriþe olanak veren, akýllý
@@ -57,9 +72,12 @@ mgetty-sendfax paketi gerekir).
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
 
 %build
-%{__make} OPT="%{rpmcflags}"
+%{__make} OPT="%{rpmcflags}" CC=%{__cc}
 
 %install
 rm -rf $RPM_BUILD_ROOT
