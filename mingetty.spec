@@ -10,8 +10,6 @@ Version:	0.9.4
 License:	GPL
 Release:	19
 Group:		Applications/System
-Group(de):	Applikationen/System
-Group(pl):	Aplikacje/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 Patch0:		%{name}-misc.patch
 Patch1:		%{name}-current-time.patch
