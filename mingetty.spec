@@ -66,20 +66,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/mingetty
 
 %{_mandir}/man8/*
-
-%changelog
-* Mon Jun 07 1999 Jan Rêkorajski <baggins@pld.org.pl>
-  [0.9.4-10]
-- spec cleanup
-
-* Fri Apr  9 1999 Piotr Czerwiñski <pius@pld.org.pl>
-- added Group(pl),
-- fixed passing $RPM_OPT_FLAGS during compile,
-- gzipping documentation and man pages,
-- removed man group from man pages,
-- cosmetic changes for common l&f.
-
-* Tue Oct 06 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
-  [0.9.4-8]
-- added pl translation,
-- minor modifications of the spec file.
