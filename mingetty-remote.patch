@@ -1,0 +1,130 @@
+diff -Naur mingetty-0.9.4/Makefile mingetty-0.9.4-p/Makefile
+--- mingetty-0.9.4/Makefile	Tue Jul  4 16:55:38 2000
++++ mingetty-0.9.4-p/Makefile	Tue Jul  4 17:06:07 2000
+@@ -1,5 +1,5 @@
+ CC=gcc
+-OPT=-O2
++OPT=-O2 -g
+ CFLAGS=$(OPT) -Wall -pipe -D_GNU_SOURCE
+ # my compiler doesn't need -fno-strength-reduce
+ LDFLAGS=-Wl,-warn-common -s
+diff -Naur mingetty-0.9.4/mingetty.8 mingetty-0.9.4-p/mingetty.8
+--- mingetty-0.9.4/mingetty.8	Tue Jul  4 16:55:38 2000
++++ mingetty-0.9.4-p/mingetty.8	Tue Jul  4 16:39:38 2000
+@@ -29,6 +29,13 @@
+ .TP
+ .B \-\-mono
+ Set terminal type to "linux-m" instead of default "linux" (for mono consoles)
++.TP
++.B \-\-remote-host=<hostname>
++Login to remote host. Uses /usr/bin/ssh as default login program.
++.TP
++.B \-\-login-program=<program>
++Use <program> instead of default login application. Mingetty passes
++arguments: "-- username" (for local login), or "-l username hostname" (for remote login)
+ .PP
+ .SH "ISSUE ESCAPES"
+ .B mingetty 
+diff -Naur mingetty-0.9.4/mingetty.c mingetty-0.9.4-p/mingetty.c
+--- mingetty-0.9.4/mingetty.c	Tue Jul  4 16:55:38 2000
++++ mingetty-0.9.4-p/mingetty.c	Tue Jul  4 17:03:23 2000
+@@ -48,6 +48,10 @@
+ #define _PATH_LOGIN "/bin/login"
+ #endif
+ 
++#ifndef _PATH_SSH
++#define _PATH_SSH "/usr/bin/ssh"
++#endif
++
+ #ifdef linux
+ #include <sys/param.h>
+ #define USE_SYSLOG
+@@ -82,6 +86,14 @@
+ static int longhostname = 0;
+ /* Set mono terminal type */
+ static int mono_term = 0;
++/* Log onto remote host */
++static int remote_login = 0;
++/* Remote hostname */
++static char remote_host[1024];
++/* Do we use user's login app? */
++static int another_login = 0;
++/* Login program */
++static char login_program[1024];
+ 
+ /*
+  * output error messages
+@@ -395,6 +407,8 @@
+ 	{ "noclear", no_argument, &noclear, 1},
+ 	{ "long-hostname", no_argument, &longhostname, 1},
+ 	{ "mono", no_argument, &mono_term, 1},
++	{ "remote-host", required_argument, NULL, 2},
++	{ "login-program", required_argument, NULL, 3},
+ 	{ 0, 0, 0, 0 }
+ };
+ 
+@@ -404,24 +418,43 @@
+ int main (int argc, char **argv)
+ {
+ 	char *logname, *s;
++	int option_index = 0;
+ 	int c;
+ 
+ 	progname = argv[0];
+ 	uname (&uts);
+-	gethostname (hn, MAXHOSTNAMELEN);
+ 	pid = getpid ();
+ 	time (&cur_time);
+ 
+-	while ((c = getopt_long (argc, argv, "", long_options, (int *) 0))
++	while ((c = getopt_long (argc, argv, "", long_options, &option_index))
+ 			!= EOF) {
+ 		switch (c) {
+ 			case 0:
+ 				break;
++			case 2:
++				remote_login = 1;
++				strncpy(remote_host, optarg, 1024);
++				remote_host[1023] = '\0';
++				break;
++			case 3:
++				another_login = 1;
++				strncpy(login_program, optarg, 1024);
++				login_program[1023] = '\0';
++				break;
+ 			default:
+ 				usage ();
+ 		}
+ 	}
+ 	
++	if (!remote_login)
++		  gethostname (hn, MAXHOSTNAMELEN);
++	else {
++		  strncpy(hn, remote_host, MAXHOSTNAMELEN);
++		  hn[MAXHOSTNAMELEN] = '\0';
++		  if ((!longhostname)&&(strchr(hn,'.')))
++			  *(strchr(hn,'.')) = '\0';
++	}
++
+ 	if (mono_term)
+ 		putenv ("TERM=linux-m");
+ 	else
+@@ -445,8 +478,16 @@
+ 
+ 	while ((logname = get_logname ()) == 0);
+ 
+-	execl (_PATH_LOGIN, _PATH_LOGIN, "--", logname, NULL);
+-	error ("%s: can't exec " _PATH_LOGIN ": %s", tty, sys_errlist[errno]);
++	if (!remote_login) {
++		  if (!another_login)
++			    strncpy(login_program, _PATH_LOGIN, 1024);
++		  execl (login_program, login_program, "--", logname, NULL);
++	} else {
++		  if (!another_login)
++			    strncpy(login_program, _PATH_SSH, 1024);
++		  execl (login_program, login_program, "-l", logname, remote_host, NULL);
++	}
++	error ("%s: can't exec %s: %s", login_program, tty, sys_errlist[errno]);
+ 	exit (0);
+ }
+ 
