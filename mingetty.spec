@@ -85,15 +85,11 @@ install mingetty $RPM_BUILD_ROOT%{_sbindir}
 
 install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
-gzip -9nf ANNOUNCE
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ANNOUNCE.gz
-
+%doc ANNOUNCE
 %attr(755,root,root) %{_sbindir}/mingetty
-
 %{_mandir}/man8/*
