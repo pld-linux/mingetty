@@ -1,0 +1,57 @@
+diff -Naur mingetty-0.9.4/mingetty.8 mingetty-0.9.4-p/mingetty.8
+--- mingetty-0.9.4/mingetty.8	Fri Jun 14 15:54:01 1996
++++ mingetty-0.9.4-p/mingetty.8	Wed Jun 14 12:34:28 2000
+@@ -26,6 +26,9 @@
+ .B \-\-long\-hostname
+ By default the hostname is only printed until the first dot.
+ With this option enabled, the full text from gethostname() is shown.
++.TP
++.B \-\-mono
++Set terminal type to "linux-m" instead of default "linux" (for mono consoles)
+ .PP
+ .SH "ISSUE ESCAPES"
+ .B mingetty 
+diff -Naur mingetty-0.9.4/mingetty.c mingetty-0.9.4-p/mingetty.c
+--- mingetty-0.9.4/mingetty.c	Wed Jun 14 12:17:55 2000
++++ mingetty-0.9.4-p/mingetty.c	Wed Jun 14 12:36:22 2000
+@@ -80,7 +80,8 @@
+ static int noclear = 0;
+ /* Print the whole string of gethostname() instead of just until the next "." */
+ static int longhostname = 0;
+-
++/* Set mono terminal type */
++static int mono_term = 0;
+ 
+ /*
+  * output error messages
+@@ -393,6 +394,7 @@
+ static struct option const long_options[] = {
+ 	{ "noclear", no_argument, &noclear, 1},
+ 	{ "long-hostname", no_argument, &longhostname, 1},
++	{ "mono", no_argument, &mono_term, 1},
+ 	{ 0, 0, 0, 0 }
+ };
+ 
+@@ -409,9 +411,6 @@
+ 	gethostname (hn, MAXHOSTNAMELEN);
+ 	pid = getpid ();
+ 	time (&cur_time);
+-#if 1
+-	putenv ("TERM=linux");
+-#endif
+ 
+ 	while ((c = getopt_long (argc, argv, "", long_options, (int *) 0))
+ 			!= EOF) {
+@@ -422,6 +421,12 @@
+ 				usage ();
+ 		}
+ 	}
++	
++	if (mono_term)
++		putenv ("TERM=linux-m");
++	else
++		putenv ("TERM=linux");
++	
+ 	if (!longhostname && (s = strchr(hn, '.')))
+ 		*s = '\0';
+ 	tty = argv[optind];
