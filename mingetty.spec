@@ -1,5 +1,5 @@
 Summary:	a compact, console-only getty
-Summary(de):	ein kompaktes, auf Konsolen beschränktes GETTY 
+Summary(de):	ein kompaktes, auf Konsolen beschränktes GETTY
 Summary(es):	Un getty compacto, que sólo funciona en la consola
 Summary(fr):	getty compact, uniquement pour la console
 Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
@@ -46,7 +46,7 @@ mingetty, de Florian La Roche, est un getty réduit et allégé pour
 console virtuelle uniquement. mingetty n'est pas adapté pour les
 lignes série (l'auteur recommande d'utiliser `mgetty' pour cet usage).
 
-%description -l pl 
+%description -l pl
 Mingetty - Floriana La Roche, jest minimalnym getty do u¿ytku na
 wirtualnej konsoli. Mingetty nie obs³uguje portów szeregowych.
 
