@@ -1,5 +1,5 @@
-Summary:	a compact, console-only getty
-Summary(de):	ein kompaktes, auf Konsolen beschränktes GETTY
+Summary:	A compact, console-only getty
+Summary(de):	Ein kompaktes, auf Konsolen beschränktes GETTY
 Summary(es):	Un getty compacto, que sólo funciona en la consola
 Summary(fr):	getty compact, uniquement pour la console
 Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
