@@ -8,6 +8,7 @@ Version:     0.9.4
 Copyright:   GPL
 Release:     9
 Group:       Utilities/System
+Group(pl):   Narzêdzia/System
 Source:      ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 Patch0:      %{name}-%{version}-make.patch
 Patch1:      %{name}-%{version}-glibc.patch
@@ -41,13 +42,13 @@ desteðinin tam olarak kullanýlabilmesi için mgetty-sendfax paketi gerekir).
 
 %prep
 %setup -q
-%patch0 -p0 -b .make
+%patch0 -p0
 %patch1 -p1 -b .glibc
 %patch2 -p1 -b .isprint
 %patch3 -p1 -b .wtmplock
 
 %build
-make 
+make RPM_OPTS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -55,16 +56,26 @@ install -d $RPM_BUILD_ROOT/{usr/man/man8,sbin}
 install -s mingetty $RPM_BUILD_ROOT/sbin
 install *.8 $RPM_BUILD_ROOT/usr/man/man8
 
+gzip -9nf $RPM_BUILD_ROOT/usr/man/man8/* \
+	ANNOUNCE
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
-%doc ANNOUNCE 
-%attr(755, root, root) /sbin/mingetty
-%attr(644, root, man) /usr/man/man8/mingetty.8
+%defattr(644,root,root,755)
+%doc ANNOUNCE.gz
+%attr(755,root,root) /sbin/mingetty
+/usr/man/man8/mingetty.8.gz
 
 %changelog
+* Fri Apr  9 1999 Piotr Czerwiñski <pius@pld.org.pl>
+- added Group(pl),
+- fixed passing $RPM_OPT_FLAGS during compile,
+- gzipping documentation and man pages,
+- removed man group from man pages,
+- cosmetic changes for common l&f.
+
 * Tue Oct 06 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
   [0.9.4-8]
 - added pl translation,
@@ -81,3 +92,4 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Jun 02 1997 Erik Troan <ewt@redhat.com>
 - built against glibc
+ 
