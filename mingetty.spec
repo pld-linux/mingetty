@@ -5,8 +5,8 @@ Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
 Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
-License:	GPL
 Release:	12
+License:	GPL
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
