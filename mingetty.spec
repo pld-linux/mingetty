@@ -52,7 +52,7 @@ mgetty-sendfax paketi gerekir).
 %patch3 -p1
 
 %build
-%{__make} OPT="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
+%{__make} OPT="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
