@@ -6,7 +6,7 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	17
+Release:	18
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
@@ -16,6 +16,8 @@ Patch1:		%{name}-current-time.patch
 Patch2:		%{name}-mono-console.patch
 Patch3:		%{name}-remote.patch
 Patch4:		%{name}-fgetc.patch
+Patch5:		%{name}-autologin.patch
+Patch6:		%{name}-autologin-remove-restrictions.patch
 Requires:	login
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -53,6 +55,8 @@ mgetty-sendfax paketi gerekir).
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 %{__make} OPT="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
