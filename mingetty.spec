@@ -6,11 +6,12 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	11
+Release:	12
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 Patch0:		mingetty-misc.patch
+Patch1:		mingetty-current-time.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -43,6 +44,7 @@ mgetty-sendfax paketi gerekir).
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 make OPT="$RPM_OPT_FLAGS"
