@@ -1,14 +1,16 @@
---- mingetty-0.9.4/mingetty.c.s390	Thu Jan 11 15:33:21 2001
-+++ mingetty-0.9.4/mingetty.c	Thu Jan 11 15:34:03 2001
-@@ -402,7 +402,11 @@
- 	pid = getpid ();
- 	time (&cur_time);
- #if 1
+--- mingetty-0.9.4/mingetty.c.orig	Fri Dec  7 21:35:18 2001
++++ mingetty-0.9.4/mingetty.c	Fri Dec  7 21:36:54 2001
+@@ -539,8 +539,12 @@
+ 	if (mono_term)
+ 		putenv ("TERM=linux-m");
+ 	else
 +#ifdef	s390
-+	putenv ("TERM=dumb");
++		putenv ("TERM=dumb");
 +#else
- 	putenv ("TERM=linux");
+ 		putenv ("TERM=linux");
+-	
 +#endif
- #endif
- 
- 	while ((c = getopt_long (argc, argv, "", long_options, (int *) 0))
++		
+ 	if (!longhostname && (s = strchr(hn, '.')))
+ 		*s = '\0';
+ 	tty = argv[optind];
