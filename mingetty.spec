@@ -54,9 +54,9 @@ make RPM_OPTS="$RPM_OPT_FLAGS"
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{usr/man/man8,sbin}
 install -s mingetty $RPM_BUILD_ROOT/sbin
-install *.8 $RPM_BUILD_ROOT/usr/man/man8
+install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man8/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man8/* \
 	ANNOUNCE
 
 %clean
@@ -66,7 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ANNOUNCE.gz
 %attr(755,root,root) /sbin/mingetty
-/usr/man/man8/*
+%{_mandir}/man8/*
 
 %changelog
 * Fri Apr  9 1999 Piotr Czerwiñski <pius@pld.org.pl>
