@@ -1,0 +1,117 @@
+diff -Nur mingetty-0.9.4/Makefile mingetty-0.9.4.pld/Makefile
+--- mingetty-0.9.4/Makefile	Tue Apr  9 21:11:26 1996
++++ mingetty-0.9.4.pld/Makefile	Thu Jun 10 17:04:24 1999
+@@ -1,4 +1,6 @@
+-CFLAGS=-Wall -O6 -fomit-frame-pointer -pipe
++CC=gcc
++OPT=-O2
++CFLAGS=$(OPT) -Wall -pipe -D_GNU_SOURCE
+ # my compiler doesn't need -fno-strength-reduce
+ LDFLAGS=-Wl,-warn-common -s
+ 
+@@ -6,8 +8,8 @@
+ 		size mingetty
+ 
+ install:	all
+-		install -s mingetty /sbin/
+-		install -m 644 mingetty.8 /usr/man/man8/
++		install -s -m 0755 -o root -g root mingetty /sbin/
++		install    -m 0644 -o root -g root mingetty.8 /usr/man/man8/
+ 
+ mingetty:	mingetty.o
+ 
+diff -Nur mingetty-0.9.4/mingetty.8 mingetty-0.9.4.pld/mingetty.8
+--- mingetty-0.9.4/mingetty.8	Fri Jun 14 15:54:01 1996
++++ mingetty-0.9.4.pld/mingetty.8	Thu Jun 10 17:01:59 1999
+@@ -63,7 +63,7 @@
+ .PP
+ .SH FILES
+ .IR /etc/issue ,
+-.IR /var/run/utmp .
++.IR /var/run/utmpx .
+ .PP
+ .SH "SEE ALSO"
+ .BR mgetty (8),
+diff -Nur mingetty-0.9.4/mingetty.c mingetty-0.9.4.pld/mingetty.c
+--- mingetty-0.9.4/mingetty.c	Thu Jun  6 12:29:30 1996
++++ mingetty-0.9.4.pld/mingetty.c	Thu Jun 10 17:06:27 1999
+@@ -37,13 +37,17 @@
+ #include <errno.h>
+ #include <sys/stat.h>
+ #include <sys/file.h>
+-#include <sys/signal.h>
++#include <signal.h>
+ #include <fcntl.h>
+ #include <stdarg.h>
+ #include <ctype.h>
+ #include <utmp.h>
+ #include <getopt.h>
+ 
++#ifndef _PATH_LOGIN
++#define _PATH_LOGIN "/bin/login"
++#endif
++
+ #ifdef linux
+ #include <sys/param.h>
+ #define USE_SYSLOG
+@@ -51,7 +55,7 @@
+ 
+  /* If USE_SYSLOG is undefined all diagnostics go directly to /dev/console. */
+ #ifdef	USE_SYSLOG
+-#include <syslog.h>
++#include <sys/syslog.h>
+ #endif
+ 
+ #define	ISSUE "/etc/issue"	/* displayed before the login prompt */
+@@ -131,6 +135,7 @@
+ 	struct utmp ut;
+ 	int ut_fd;
+ 	struct utmp *utp;
++	void locktimeout();
+ 
+ 	utmpname (_PATH_UTMP);
+ 	setutent ();
+@@ -158,7 +163,10 @@
+ 	endutent ();
+ 
+ 	if ((ut_fd = open (_PATH_WTMP, O_APPEND | O_WRONLY)) >= 0) {
++	        (void)signal(SIGALRM, locktimeout);
++		(void)alarm(3);
+ 		flock (ut_fd, LOCK_EX);
++		(void)alarm(0);
+ 		write (ut_fd, &ut, sizeof (ut));
+ 		flock (ut_fd, LOCK_UN);
+ 		close (ut_fd);
+@@ -365,9 +373,9 @@
+ 			if (c == '\n' || c == '\r') {
+ 				*bp = 0;
+ 				break;
+-			} else if (!isalnum (c) && c != '_')
+-				error ("%s: invalid character for login name",
+-								tty);
++			} else if (!isprint (c))
++				error ("%s: invalid character %c in login name",
++								tty, c);
+ 			else if (bp - logname >= sizeof (logname) - 1)
+ 				error ("%s: too long login name", tty);
+ 			else
+@@ -437,3 +445,19 @@
+ 	exit (0);
+ }
+ 
++ 
++void locktimeout()
++{
++#ifdef USE_SYSLOG
++    openlog (progname, LOG_PID, LOG_AUTH);
++    syslog(LOG_ALERT, "Lock failed on wtmpx");
++    closelog ();
++#else
++    int fd;
++    char buf[]="Lock failed on wtmpx\n";
++    if ((fd = open ("/dev/console", 1)) >= 0) {
++	write (fd, buf, strlen (buf));
++	close (fd);
++    }
++#endif
++}
