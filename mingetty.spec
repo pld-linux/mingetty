@@ -11,6 +11,7 @@ License:	GPL
 Release:	19
 Group:		Applications/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
+# Source0-md5: 2366883ee2253c7116b2ee0d9aafbb06
 Patch0:		%{name}-misc.patch
 Patch1:		%{name}-current-time.patch
 Patch2:		%{name}-mono-console.patch
