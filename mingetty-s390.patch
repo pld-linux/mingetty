@@ -1,0 +1,14 @@
+--- mingetty-0.9.4/mingetty.c.s390	Thu Jan 11 15:33:21 2001
++++ mingetty-0.9.4/mingetty.c	Thu Jan 11 15:34:03 2001
+@@ -402,7 +402,11 @@
+ 	pid = getpid ();
+ 	time (&cur_time);
+ #if 1
++#ifdef	s390
++	putenv ("TERM=dumb");
++#else
+ 	putenv ("TERM=linux");
++#endif
+ #endif
+ 
+ 	while ((c = getopt_long (argc, argv, "", long_options, (int *) 0))
