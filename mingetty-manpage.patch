@@ -1,0 +1,12 @@
+--- mingetty-0.9.4/mingetty.8.orig	Fri Apr  6 22:17:28 2001
++++ mingetty-0.9.4/mingetty.8	Fri Apr  6 22:17:32 2001
+@@ -50,7 +50,8 @@
+ insert current time (localtime),
+ .IP \fB\es\fP
+ inserts operating system name,
+-.IP \fB\eu\fP resp. \fB\eU\fP
++.IP \fB\eu\fP
++resp. \fB\eU\fP
+ the current number of users which are currently logged in.
+ \\U inserts "\fIn\fP users", where as \\u only inserts "\fIn\fP".
+ .IP \fB\ev\fP
