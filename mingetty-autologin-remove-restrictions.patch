@@ -1,6 +1,32 @@
+diff -Nru mingetty-0.9.4.orig/mingetty.8 mingetty-0.9.4/mingetty.8
+--- mingetty-0.9.4.orig/mingetty.8	Sun Apr 29 20:01:16 2001
++++ mingetty-0.9.4/mingetty.8	Sun Apr 29 20:18:53 2001
+@@ -35,12 +35,8 @@
+ .IP
+ When the autologin option is supplied,
+ .B mingetty 
+-will check that the controlling terminal is the console (normally
+-.IR /dev/tty1 ), 
+-that a reasonable username has been supplied, and that this is the
+-first autologin request since the system has booted.  If all of these
+-conditions have been met, a request for an unauthenticated login is
+-passed to the
++will check that a reasonable username has been supplied.
++Then a request for an unauthenticated login is passed to the
+ .B login 
+ program.  Otherwise, a normal interactive login is performed.
+ .IP
+@@ -109,7 +105,6 @@
+ .SH FILES
+ .IR /etc/issue ,
+ .IR /var/run/utmp ,
+-.IR /var/log/autologin .
+ .PP
+ .SH "SEE ALSO"
+ .BR mgetty (8),
 diff -Nru mingetty-0.9.4.orig/mingetty.c mingetty-0.9.4/mingetty.c
 --- mingetty-0.9.4.orig/mingetty.c	Sun Apr 29 20:01:16 2001
-+++ mingetty-0.9.4/mingetty.c	Sun Apr 29 20:04:59 2001
++++ mingetty-0.9.4/mingetty.c	Sun Apr 29 20:16:57 2001
 @@ -65,7 +65,7 @@
  
  /* AUTO_TTY is the tty on which autologins will be accepted.  If set
