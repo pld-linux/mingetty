@@ -14,6 +14,8 @@ Source:		%{name}-%{version}.tar.gz
 Patch0:		mingetty-misc.patch
 Buildroot:	/tmp/%{name}-%{version}-root
 
+%define		_exec_prefix	/
+
 %description
 mingetty, by Florian La Roche, is a lightweight, minimalist getty for
 use on virtual consoles only.  mingetty is not suitable for serial
@@ -47,8 +49,8 @@ make OPT="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{usr/share/man/man8,sbin}
-install -s mingetty $RPM_BUILD_ROOT/sbin
+install -d $RPM_BUILD_ROOT{%{_mandir}/man8,%{_sbindir}}
+install -s mingetty $RPM_BUILD_ROOT%{_sbindir}
 
 install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
@@ -61,7 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ANNOUNCE.gz
 
-%attr(755,root,root) /sbin/mingetty
+%attr(755,root,root) %{_sbindir}/mingetty
 
 %{_mandir}/man8/*
 
