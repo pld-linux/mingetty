@@ -185,36 +185,21 @@ diff -Nru mingetty-0.9.4.orig/mingetty.c mingetty-0.9.4/mingetty.c
  			default:
  				usage ();
  		}
-@@ -476,17 +552,21 @@
+@@ -476,6 +552,9 @@
  	/* flush input and output queues, important for modems */
  	ioctl (0, TCFLSH, 2);
  
--	while ((logname = get_logname ()) == 0);
--
--	if (!remote_login) {
--		  if (!another_login)
--			    strncpy(login_program, _PATH_LOGIN, 1024);
--		  execl (login_program, login_program, "--", logname, NULL);
--	} else {
--		  if (!another_login)
--			    strncpy(login_program, _PATH_SSH, 1024);
--		  execl (login_program, login_program, "-l", logname, remote_host, NULL);
--	}
 + 	if (autologin_ok()) {
 + 		execl (_PATH_LOGIN, _PATH_LOGIN, "-f", autologin_name, NULL);
 + 	} else {
-+      while ((logname = get_logname ()) == 0);
-+
-+      if (!remote_login) {
-+           if (!another_login)
-+                strncpy(login_program, _PATH_LOGIN, 1024);
-+           execl (login_program, login_program, "--", logname, NULL);
-+      } else {
-+           if (!another_login)
-+                strncpy(login_program, _PATH_SSH, 1024);
-+           execl (login_program, login_program, "-l", logname, remote_host, NULL);
-+      }
-+   }
+ 	while ((logname = get_logname ()) == 0);
+ 
+ 	if (!remote_login) {
+@@ -487,6 +566,7 @@
+ 			    strncpy(login_program, _PATH_SSH, 1024);
+ 		  execl (login_program, login_program, "-l", logname, remote_host, NULL);
+ 	}
++	}
  	error ("%s: can't exec %s: %s", login_program, tty, sys_errlist[errno]);
  	exit (0);
  }
