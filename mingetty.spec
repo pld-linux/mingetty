@@ -8,7 +8,7 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	19
+Release:	20
 Group:		Applications/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 # Source0-md5: 2366883ee2253c7116b2ee0d9aafbb06
