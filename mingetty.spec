@@ -11,7 +11,7 @@ Group:		Utilities/System
 Group(pl):	Narzêdzia/System
 Source:		ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 Patch0:		mingetty-misc.patch
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
 
