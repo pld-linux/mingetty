@@ -20,18 +20,6 @@ diff -Nur mingetty-0.9.4/Makefile mingetty-0.9.4.pld/Makefile
  
  mingetty:	mingetty.o
  
-diff -Nur mingetty-0.9.4/mingetty.8 mingetty-0.9.4.pld/mingetty.8
---- mingetty-0.9.4/mingetty.8	Fri Jun 14 15:54:01 1996
-+++ mingetty-0.9.4.pld/mingetty.8	Thu Jun 10 17:01:59 1999
-@@ -63,7 +63,7 @@
- .PP
- .SH FILES
- .IR /etc/issue ,
--.IR /var/run/utmp .
-+.IR /var/run/utmpx .
- .PP
- .SH "SEE ALSO"
- .BR mgetty (8),
 diff -Nur mingetty-0.9.4/mingetty.c mingetty-0.9.4.pld/mingetty.c
 --- mingetty-0.9.4/mingetty.c	Thu Jun  6 12:29:30 1996
 +++ mingetty-0.9.4.pld/mingetty.c	Thu Jun 10 17:06:27 1999
@@ -104,11 +92,11 @@ diff -Nur mingetty-0.9.4/mingetty.c mingetty-0.9.4.pld/mingetty.c
 +{
 +#ifdef USE_SYSLOG
 +    openlog (progname, LOG_PID, LOG_AUTH);
-+    syslog(LOG_ALERT, "Lock failed on wtmpx");
++    syslog(LOG_ALERT, "Lock failed on wtmp");
 +    closelog ();
 +#else
 +    int fd;
-+    char buf[]="Lock failed on wtmpx\n";
++    char buf[]="Lock failed on wtmp\n";
 +    if ((fd = open ("/dev/console", 1)) >= 0) {
 +	write (fd, buf, strlen (buf));
 +	close (fd);
