@@ -1,0 +1,11 @@
+--- mingetty-0.9.4/mingetty.c.syslog	Fri Apr  6 22:35:32 2001
++++ mingetty-0.9.4/mingetty.c	Fri Apr  6 22:35:53 2001
+@@ -108,7 +108,7 @@
+ 
+ #ifdef	USE_SYSLOG
+ 	openlog (progname, LOG_PID, LOG_AUTH);
+-	syslog (LOG_ERR, buf);
++	syslog (LOG_ERR, "%s", buf);
+ 	closelog ();
+ #else
+ 	strcat (bp, "\r\n");
