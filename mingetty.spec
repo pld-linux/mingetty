@@ -6,14 +6,15 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	15
-Group:		Utilities/System
-Group(pl):	Narzêdzia/System
+Release:	16
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
-Patch0:		mingetty-misc.patch
-Patch1:		mingetty-current-time.patch
-Patch2:		mingetty-mono-console.patch
-Patch3:		mingetty-remote.patch
+Patch0:		%{name}-misc.patch
+Patch1:		%{name}-current-time.patch
+Patch2:		%{name}-mono-console.patch
+Patch3:		%{name}-remote.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
@@ -51,16 +52,17 @@ mgetty-sendfax paketi gerekir).
 %patch3 -p1
 
 %build
-%{__make} OPT="$RPM_OPT_FLAGS"
+%{__make} OPT="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_mandir}/man8,%{_sbindir}}
-install -s mingetty $RPM_BUILD_ROOT%{_sbindir}
+
+install mingetty $RPM_BUILD_ROOT%{_sbindir}
 
 install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man8/* ANNOUNCE
+gzip -9nf ANNOUNCE
 
 %clean
 rm -rf $RPM_BUILD_ROOT
