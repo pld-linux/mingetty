@@ -6,7 +6,7 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 Copyright:	GPL
-Release:	9
+Release:	10
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
 Source:		ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
@@ -52,7 +52,7 @@ make RPM_OPTS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{usr/man/man8,sbin}
+install -d $RPM_BUILD_ROOT/{usr/share/man/man8,sbin}
 install -s mingetty $RPM_BUILD_ROOT/sbin
 install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
@@ -69,6 +69,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
+* Mon Jun 07 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [0.9.4-10]
+- spec cleanup
+
 * Fri Apr  9 1999 Piotr Czerwiñski <pius@pld.org.pl>
 - added Group(pl),
 - fixed passing $RPM_OPT_FLAGS during compile,
