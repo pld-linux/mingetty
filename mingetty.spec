@@ -8,7 +8,7 @@ Summary(tr):	Ufak bir getty
 Name:		mingetty
 Version:	0.9.4
 License:	GPL
-Release:	20
+Release:	20.1
 Group:		Applications/System
 Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 # Source0-md5: 2366883ee2253c7116b2ee0d9aafbb06
@@ -22,6 +22,7 @@ Patch6:		%{name}-autologin-remove-restrictions.patch
 Patch7:		%{name}-syslog.patch
 Patch8:		%{name}-manpage.patch
 Patch9:		%{name}-s390.patch
+Patch10:	%{name}-defaultlogin.patch
 Requires:	login
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -74,6 +75,7 @@ mgetty-sendfax paketi gerekir).
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 %{__make} OPT="%{rpmcflags}" CC=%{__cc}
