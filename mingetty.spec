@@ -1,20 +1,20 @@
-Summary:     a compact, console-only getty
-Summary(de): ein kompaktes, auf Konsolen beschränktes GETTY 
-Summary(fr): getty compact, uniquement pour la console
-Summary(pl): Ma³y getty - tylko na konsolê (minimal getty)
-Summary(tr): Ufak bir getty
-Name:        mingetty
-Version:     0.9.4
-Copyright:   GPL
-Release:     9
-Group:       Utilities/System
-Group(pl):   Narzêdzia/System
-Source:      ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
-Patch0:      %{name}-%{version}-make.patch
-Patch1:      %{name}-%{version}-glibc.patch
-Patch2:      %{name}-%{version}-isprint.patch
-Patch3:      %{name}-%{version}-wtmplock.patch
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	a compact, console-only getty
+Summary(de):	ein kompaktes, auf Konsolen beschränktes GETTY 
+Summary(fr):	getty compact, uniquement pour la console
+Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
+Summary(tr):	Ufak bir getty
+Name:		mingetty
+Version:	0.9.4
+Copyright:	GPL
+Release:	9
+Group:		Utilities/System
+Group(pl):	Narzêdzia/System
+Source:		ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
+Patch0:		mingetty-make.patch
+Patch1:		mingetty-glibc.patch
+Patch2:		mingetty-isprint.patch
+Patch3:		mingetty-wtmplock.patch
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 mingetty, by Florian La Roche, is a lightweight, minimalist getty for
@@ -66,7 +66,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ANNOUNCE.gz
 %attr(755,root,root) /sbin/mingetty
-/usr/man/man8/mingetty.8.gz
+/usr/man/man8/*
 
 %changelog
 * Fri Apr  9 1999 Piotr Czerwiñski <pius@pld.org.pl>
@@ -92,4 +92,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Mon Jun 02 1997 Erik Troan <ewt@redhat.com>
 - built against glibc
- 
