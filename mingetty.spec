@@ -9,8 +9,7 @@ Copyright:	GPL
 Release:	11
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
-URL:		ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons
-Source:		%{name}-%{version}.tar.gz
+Source:		ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
 Patch0:		mingetty-misc.patch
 Buildroot:	/tmp/%{name}-%{version}-root
 
