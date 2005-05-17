@@ -27,6 +27,7 @@ Requires:	login
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_exec_prefix	/
+%define		_sbindir	/sbin
 
 %description
 mingetty, by Florian La Roche, is a lightweight, minimalist getty for
@@ -78,7 +79,9 @@ mgetty-sendfax paketi gerekir).
 %patch10 -p1
 
 %build
-%{__make} OPT="%{rpmcflags}" CC=%{__cc}
+%{__make} \
+	OPT="%{rpmcflags}" \
+	CC="%{__cc}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
