@@ -1,7 +1,7 @@
 diff -ur mingetty-1.07/mingetty.8 mingetty-1.07-remote/mingetty.8
---- mingetty-1.07/mingetty.8	2007-02-11 20:48:29.000000000 +0100
-+++ mingetty-1.07-remote/mingetty.8	2007-02-11 20:48:14.000000000 +0100
-@@ -65,6 +65,9 @@
+--- mingetty-1.07/mingetty.8	2007-02-11 21:00:04.000000000 +0100
++++ mingetty-1.07-remote/mingetty.8	2007-02-11 20:58:28.000000000 +0100
+@@ -69,6 +69,9 @@
  a login name and password. Check the \-f option from
  .B /bin/login
  for this.
@@ -12,8 +12,8 @@ diff -ur mingetty-1.07/mingetty.8 mingetty-1.07-remote/mingetty.8
  .SH "ISSUE ESCAPES"
  .B mingetty 
 diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
---- mingetty-1.07/mingetty.c	2007-02-11 20:48:29.000000000 +0100
-+++ mingetty-1.07-remote/mingetty.c	2007-02-11 20:47:45.000000000 +0100
+--- mingetty-1.07/mingetty.c	2007-02-11 21:00:04.000000000 +0100
++++ mingetty-1.07-remote/mingetty.c	2007-02-11 20:59:44.000000000 +0100
 @@ -50,6 +50,10 @@
  #include <sys/kd.h>
  #include <sys/ttydefaults.h>
@@ -25,7 +25,7 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
  #ifndef IUTF8
  # ifndef ASM_IUTF8
  #  error ASM_IUTF8 input flag not defined - Cannot define IUTF8
-@@ -94,6 +98,10 @@
+@@ -98,6 +102,12 @@
  static int mono_term = 0;
  /* If no login supplied, attempt a default login with this username. */
  static char *defaultlogin_name = NULL;
@@ -33,10 +33,12 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
 +static int remote_login = 0;
 +/* Remote hostname */
 +static char remote_host[MAXHOSTNAMELEN + 1];
++/* Do we use user's login app? */
++static int another_login = 0;
  
  /* error() - output error messages */
  static void error (const char *fmt, ...)
-@@ -429,7 +439,7 @@
+@@ -433,7 +443,7 @@
  		"[--nohangup] [--nohostname] [--long-hostname] "
  		"[--loginprog=/bin/login] [--nice=10] [--delay=10] "
  		"[--chdir=/home] [--chroot=/chroot] [--autologin=user] "
@@ -45,9 +47,9 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
  		"tty' with e.g. tty=tty1", progname);
  }
  
-@@ -447,20 +458,20 @@
- 	{ "loginprog", required_argument, NULL, 'l' },
+@@ -453,20 +463,20 @@
  	{ "long-hostname", no_argument, &longhostname, 1 },
+ 	{ "mono", no_argument, &mono_term, 1},
  	{ "nice", required_argument, NULL, 'n' },
 +	{ "remote-host", required_argument, NULL, 2},
  	{ 0, 0, 0, 0 }
@@ -68,7 +70,7 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
  	pid = getpid ();
  	sid = getsid (0);
  #if	defined(s390) || defined(__s390__)
-@@ -470,10 +481,15 @@
+@@ -479,10 +489,17 @@
  #endif
  
  	while ((c = getopt_long (argc, argv, "a:d:l:n:w:r:", long_options,
@@ -81,11 +83,21 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
 +			remote_login = 1;
 +			strncpy(remote_host, optarg, MAXHOSTNAMELEN);
 +			remote_host[MAXHOSTNAMELEN] = '\0';
++			if (another_login == 0)
++				loginprog = strdup(_PATH_SSH);
 +			break;
  		case 'a':
  			autologin = optarg;
  			break;
-@@ -499,6 +515,13 @@
+@@ -490,6 +507,7 @@
+ 			delay = atoi (optarg);
+ 			break;
+ 		case 'l':
++			another_login = 1;
+ 			loginprog = optarg;
+ 			break;
+ 		case 'n':
+@@ -508,6 +526,13 @@
  			usage ();
  		}
  	}
@@ -99,7 +111,7 @@ diff -ur mingetty-1.07/mingetty.c mingetty-1.07-remote/mingetty.c
  	if (longhostname == 0 && (s = strchr (hn, '.')))
  		*s = '\0';
  	tty = argv[optind];
-@@ -533,7 +556,11 @@
+@@ -542,7 +567,11 @@
  	if (priority)
  		nice (priority);
  
