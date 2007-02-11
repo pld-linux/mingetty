@@ -1,3 +1,5 @@
+# TODO:
+# -fix patches 1, 2 and 3
 Summary:	A compact, console-only getty
 Summary(de):	Ein kompaktes, auf Konsolen beschränktes GETTY
 Summary(es):	Un getty compacto, que sólo funciona en la consola
@@ -6,23 +8,17 @@ Summary(pl):	Ma³y getty - tylko na konsolê (minimal getty)
 Summary(pt_BR):	Um getty compacto, que só funciona na console
 Summary(tr):	Ufak bir getty
 Name:		mingetty
-Version:	0.9.4
+Version:	1.07
 License:	GPL
-Release:	20.1
+Release:	0.1
 Group:		Applications/System
-Source0:	ftp://jurix.jura.uni-sb.de/pub/linux/source/system/daemons/%{name}-%{version}.tar.gz
-# Source0-md5:	2366883ee2253c7116b2ee0d9aafbb06
-Patch0:		%{name}-misc.patch
-Patch1:		%{name}-current-time.patch
+Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+# Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
+Patch0:		%{name}-utf8.patch
+Patch1:		%{name}-defaultlogin.patch
 Patch2:		%{name}-mono-console.patch
 Patch3:		%{name}-remote.patch
-Patch4:		%{name}-fgetc.patch
-Patch5:		%{name}-autologin.patch
-Patch6:		%{name}-autologin-remove-restrictions.patch
-Patch7:		%{name}-syslog.patch
-Patch8:		%{name}-manpage.patch
-Patch9:		%{name}-s390.patch
-Patch10:	%{name}-defaultlogin.patch
+URL:		http://sourceforge.net/projects/mingetty
 Requires:	login
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -70,13 +66,6 @@ mgetty-sendfax paketi gerekir).
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
 
 %build
 %{__make} \
