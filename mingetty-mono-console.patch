@@ -1,57 +1,53 @@
-diff -Naur mingetty-0.9.4/mingetty.8 mingetty-0.9.4-p/mingetty.8
---- mingetty-0.9.4/mingetty.8	Fri Jun 14 15:54:01 1996
-+++ mingetty-0.9.4-p/mingetty.8	Wed Jun 14 12:34:28 2000
-@@ -26,6 +26,9 @@
- .B \-\-long\-hostname
- By default the hostname is only printed until the first dot.
- With this option enabled, the full text from gethostname() is shown.
-+.TP
+diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
+--- mingetty-1.07.org/mingetty.8	2003-05-14 10:55:43.000000000 +0200
++++ mingetty-1.07/mingetty.8	2007-02-11 18:54:55.542623000 +0100
+@@ -45,6 +45,9 @@
+ .B \-\-loginprog /bin/login
+ Change the login app.
+ .TP
 +.B \-\-mono
 +Set terminal type to "linux-m" instead of default "linux" (for mono consoles)
- .PP
- .SH "ISSUE ESCAPES"
- .B mingetty 
-diff -Naur mingetty-0.9.4/mingetty.c mingetty-0.9.4-p/mingetty.c
---- mingetty-0.9.4/mingetty.c	Wed Jun 14 12:17:55 2000
-+++ mingetty-0.9.4-p/mingetty.c	Wed Jun 14 12:36:22 2000
-@@ -80,7 +80,8 @@
- static int noclear = 0;
- /* Print the whole string of gethostname() instead of just until the next "." */
- static int longhostname = 0;
--
++.TP
+ .B \-\-nice 10
+ Change the priority by calling nice().
+ .TP
+diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
+--- mingetty-1.07.org/mingetty.c	2007-02-11 18:54:21.442623000 +0100
++++ mingetty-1.07/mingetty.c	2007-02-11 18:55:21.242623000 +0100
+@@ -94,6 +94,8 @@
+ static char *autologin = NULL;
+ /* terminal mode */
+ static int mode = K_RAW;
 +/* Set mono terminal type */
 +static int mono_term = 0;
  
- /*
-  * output error messages
-@@ -393,6 +394,7 @@
- static struct option const long_options[] = {
- 	{ "noclear", no_argument, &noclear, 1},
- 	{ "long-hostname", no_argument, &longhostname, 1},
+ /* error() - output error messages */
+ static void error (const char *fmt, ...)
+@@ -401,6 +403,7 @@
+ 		"[--nohangup] [--nohostname] [--long-hostname] "
+ 		"[--loginprog=/bin/login] [--nice=10] [--delay=10] "
+ 		"[--chdir=/home] [--chroot=/chroot] [--autologin=user] "
++		"[--mono] "
+ 		"tty' with e.g. tty=tty1", progname);
+ }
+ 
+@@ -417,6 +420,7 @@
+ 	{ "nohostname", no_argument, &nohostname, 1 },
+ 	{ "loginprog", required_argument, NULL, 'l' },
+ 	{ "long-hostname", no_argument, &longhostname, 1 },
 +	{ "mono", no_argument, &mono_term, 1},
+ 	{ "nice", required_argument, NULL, 'n' },
  	{ 0, 0, 0, 0 }
  };
- 
-@@ -409,9 +411,6 @@
- 	gethostname (hn, MAXHOSTNAMELEN);
- 	pid = getpid ();
- 	time (&cur_time);
--#if 1
+@@ -437,7 +441,10 @@
+ #if	defined(s390) || defined(__s390__)
+ 	putenv ("TERM=dumb");
+ #else
 -	putenv ("TERM=linux");
--#endif
- 
- 	while ((c = getopt_long (argc, argv, "", long_options, (int *) 0))
- 			!= EOF) {
-@@ -422,6 +421,12 @@
- 				usage ();
- 		}
- 	}
-+	
 +	if (mono_term)
 +		putenv ("TERM=linux-m");
 +	else
 +		putenv ("TERM=linux");
-+	
- 	if (!longhostname && (s = strchr(hn, '.')))
- 		*s = '\0';
- 	tty = argv[optind];
+ #endif
+ 
+ 	while ((c = getopt_long (argc, argv, "a:d:l:n:w:r:", long_options,
