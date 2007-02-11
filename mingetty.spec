@@ -1,5 +1,3 @@
-# TODO:
-# -fix patches 1, 2 and 3
 Summary:	A compact, console-only getty
 Summary(de.UTF-8):   Ein kompaktes, auf Konsolen beschränktes GETTY
 Summary(es.UTF-8):   Un getty compacto, que sólo funciona en la consola
@@ -10,7 +8,7 @@ Summary(tr.UTF-8):   Ufak bir getty
 Name:		mingetty
 Version:	1.07
 License:	GPL
-Release:	0.1
+Release:	1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
@@ -85,6 +83,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ANNOUNCE
 %attr(755,root,root) %{_sbindir}/mingetty
 %{_mandir}/man8/*
