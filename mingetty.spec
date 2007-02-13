@@ -1,10 +1,10 @@
 Summary:	A compact, console-only getty
-Summary(de.UTF-8):   Ein kompaktes, auf Konsolen beschränktes GETTY
-Summary(es.UTF-8):   Un getty compacto, que sólo funciona en la consola
-Summary(fr.UTF-8):   getty compact, uniquement pour la console
-Summary(pl.UTF-8):   Mały getty - tylko na konsolę (minimal getty)
-Summary(pt_BR.UTF-8):   Um getty compacto, que só funciona na console
-Summary(tr.UTF-8):   Ufak bir getty
+Summary(de.UTF-8):	Ein kompaktes, auf Konsolen beschränktes GETTY
+Summary(es.UTF-8):	Un getty compacto, que sólo funciona en la consola
+Summary(fr.UTF-8):	getty compact, uniquement pour la console
+Summary(pl.UTF-8):	Mały getty - tylko na konsolę (minimal getty)
+Summary(pt_BR.UTF-8):	Um getty compacto, que só funciona na console
+Summary(tr.UTF-8):	Ufak bir getty
 Name:		mingetty
 Version:	1.07
 License:	GPL
