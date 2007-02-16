@@ -67,8 +67,8 @@ mgetty-sendfax paketi gerekir).
 
 %build
 %{__make} \
-	OPT="%{rpmcflags}" \
-	CC="%{__cc}"
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -Wall -W -D_GNU_SOURCE"
 
 %install
 rm -rf $RPM_BUILD_ROOT
