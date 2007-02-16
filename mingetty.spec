@@ -10,7 +10,7 @@ Version:	1.07
 License:	GPL
 Release:	1
 Group:		Applications/System
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/mingetty/%{name}-%{version}.tar.gz
 # Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
 Patch0:		%{name}-utf8.patch
 Patch1:		%{name}-mono-console.patch
