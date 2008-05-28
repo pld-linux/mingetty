@@ -1,16 +1,16 @@
 Summary:	A compact, console-only getty
-Summary(de.UTF-8):   Ein kompaktes, auf Konsolen beschränktes GETTY
-Summary(es.UTF-8):   Un getty compacto, que sólo funciona en la consola
-Summary(fr.UTF-8):   getty compact, uniquement pour la console
-Summary(pl.UTF-8):   Mały getty - tylko na konsolę (minimal getty)
-Summary(pt_BR.UTF-8):   Um getty compacto, que só funciona na console
-Summary(tr.UTF-8):   Ufak bir getty
+Summary(de.UTF-8):	Ein kompaktes, auf Konsolen beschränktes GETTY
+Summary(es.UTF-8):	Un getty compacto, que sólo funciona en la consola
+Summary(fr.UTF-8):	getty compact, uniquement pour la console
+Summary(pl.UTF-8):	Mały getty - tylko na konsolę (minimal getty)
+Summary(pt_BR.UTF-8):	Um getty compacto, que só funciona na console
+Summary(tr.UTF-8):	Ufak bir getty
 Name:		mingetty
 Version:	1.07
+Release:	3
 License:	GPL
-Release:	1
 Group:		Applications/System
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/mingetty/%{name}-%{version}.tar.gz
 # Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
 Patch0:		%{name}-utf8.patch
 Patch1:		%{name}-mono-console.patch
@@ -67,8 +67,8 @@ mgetty-sendfax paketi gerekir).
 
 %build
 %{__make} \
-	OPT="%{rpmcflags}" \
-	CC="%{__cc}"
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -Wall -W -D_GNU_SOURCE"
 
 %install
 rm -rf $RPM_BUILD_ROOT
