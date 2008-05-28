@@ -7,8 +7,8 @@ Summary(pt_BR.UTF-8):	Um getty compacto, que só funciona na console
 Summary(tr.UTF-8):	Ufak bir getty
 Name:		mingetty
 Version:	1.07
+Release:	3
 License:	GPL
-Release:	1
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/mingetty/%{name}-%{version}.tar.gz
 # Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
