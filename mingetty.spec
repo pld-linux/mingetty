@@ -6,12 +6,12 @@ Summary(pl.UTF-8):	Mały getty - tylko na konsolę (minimal getty)
 Summary(pt_BR.UTF-8):	Um getty compacto, que só funciona na console
 Summary(tr.UTF-8):	Ufak bir getty
 Name:		mingetty
-Version:	1.07
-Release:	4
+Version:	1.08
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/mingetty/%{name}-%{version}.tar.gz
-# Source0-md5:	72e4bce381908556ede9c3f959d1ca7a
+# Source0-md5:	2a75ad6487ff271424ffc00a64420990
 Patch0:		%{name}-utf8.patch
 Patch1:		%{name}-mono-console.patch
 Patch2:		%{name}-defaultlogin.patch

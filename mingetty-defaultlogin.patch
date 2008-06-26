@@ -1,11 +1,12 @@
 diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
 --- mingetty-1.07.org/mingetty.8	2007-02-11 18:59:03.438623000 +0100
 +++ mingetty-1.07/mingetty.8	2007-02-11 19:00:32.962623000 +0100
-@@ -6,6 +6,7 @@
+@@ -6,7 +6,7 @@
  [\-\-noclear] [\-\-nonewline] [\-\-noissue] [\-\-nohangup] [\-\-nohostname]
  [\-\-long\-hostname] [\-\-loginprog=/bin/login] [\-\-nice=10] [\-\-delay=5]
- [\-\-chdir=/home] [\-\-chroot=/chroot] [\-\-autologin username] [\-\-mono]
-+[\-\-defaultlogin username]
+ [\-\-chdir=/home] [\-\-chroot=/chroot] [\-\-autologin username]
+-[\-\-loginpause] [\-\-mono]
++[\-\-loginpause] [\-\-mono] [\-\-defaultlogin username]
  .I tty
  .PP
  .SH DESCRIPTION
@@ -88,8 +89,8 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  		"[--nohangup] [--nohostname] [--long-hostname] "
  		"[--loginprog=/bin/login] [--nice=10] [--delay=10] "
  		"[--chdir=/home] [--chroot=/chroot] [--autologin=user] "
--		"[--mono] "
-+		"[--mono] [--defaultlogin=user] "
+-		"[--loginpause] [--mono] "
++		"[--loginpause] [--mono] [--defaultlogin=user] "
  		"tty' with e.g. tty=tty1", progname);
  }
  

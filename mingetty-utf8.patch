@@ -39,9 +39,9 @@ diff -Nru mingetty-1.07.orig/mingetty.c mingetty-1.07/mingetty.c
  /* name of this program (argv[0]) */
  static char *progname;
 @@ -74,6 +92,8 @@
- static int priority = 0;
- /* automatic login with this user */
  static char *autologin = NULL;
+ /* try to read a char before dropping to login prompt */
+ static int loginpause = 0;
 +/* terminal mode */
 +static int mode = K_RAW;
  
