@@ -1,7 +1,7 @@
-diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
---- mingetty-1.07.org/mingetty.8	2003-05-14 10:55:43.000000000 +0200
-+++ mingetty-1.07/mingetty.8	2007-02-11 18:59:03.438623000 +0100
-@@ -6,7 +6,7 @@
+diff -urNp -x '*.orig' mingetty-1.08.org/mingetty.8 mingetty-1.08/mingetty.8
+--- mingetty-1.08.org/mingetty.8	2008-01-18 12:09:02.000000000 +0100
++++ mingetty-1.08/mingetty.8	2021-05-09 20:15:48.285374609 +0200
+@@ -6,7 +6,7 @@ mingetty \- minimal getty for consoles
  [\-\-noclear] [\-\-nonewline] [\-\-noissue] [\-\-nohangup] [\-\-nohostname]
  [\-\-long\-hostname] [\-\-loginprog=/bin/login] [\-\-nice=10] [\-\-delay=5]
  [\-\-chdir=/home] [\-\-chroot=/chroot] [\-\-autologin username]
@@ -10,7 +10,7 @@ diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
  .I tty
  .PP
  .SH DESCRIPTION
-@@ -45,6 +45,9 @@
+@@ -46,6 +46,9 @@ With this option enabled, the full text
  .B \-\-loginprog /bin/login
  Change the login app.
  .TP
@@ -20,11 +20,11 @@ diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
  .B \-\-nice 10
  Change the priority by calling nice().
  .TP
-diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
---- mingetty-1.07.org/mingetty.c	2007-02-11 18:58:27.658623000 +0100
-+++ mingetty-1.07/mingetty.c	2007-02-11 18:58:43.434623000 +0100
-@@ -94,6 +94,8 @@
- static char *autologin = NULL;
+diff -urNp -x '*.orig' mingetty-1.08.org/mingetty.c mingetty-1.08/mingetty.c
+--- mingetty-1.08.org/mingetty.c	2021-05-09 20:15:48.249374609 +0200
++++ mingetty-1.08/mingetty.c	2021-05-09 20:15:48.285374609 +0200
+@@ -96,6 +96,8 @@ static char *autologin = NULL;
+ static int loginpause = 0;
  /* terminal mode */
  static int mode = K_RAW;
 +/* Set mono terminal type */
@@ -32,7 +32,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  
  /* error() - output error messages */
  static void error (const char *fmt, ...)
-@@ -409,7 +409,7 @@
+@@ -407,7 +409,7 @@ static void usage (void)
  		"[--nohangup] [--nohostname] [--long-hostname] "
  		"[--loginprog=/bin/login] [--nice=10] [--delay=10] "
  		"[--chdir=/home] [--chroot=/chroot] [--autologin=user] "
@@ -41,7 +41,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  		"tty' with e.g. tty=tty1", progname);
  }
  
-@@ -417,6 +420,7 @@
+@@ -425,6 +427,7 @@ static struct option const long_options[
  	{ "nohostname", no_argument, &nohostname, 1 },
  	{ "loginprog", required_argument, NULL, 'l' },
  	{ "long-hostname", no_argument, &longhostname, 1 },
@@ -49,7 +49,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  	{ "nice", required_argument, NULL, 'n' },
  	{ 0, 0, 0, 0 }
  };
-@@ -437,7 +441,10 @@
+@@ -445,7 +448,10 @@ int main (int argc, char **argv)
  #if	defined(s390) || defined(__s390__)
  	putenv ("TERM=dumb");
  #else
@@ -60,4 +60,4 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
 +		putenv ("TERM=linux");
  #endif
  
- 	while ((c = getopt_long (argc, argv, "a:d:l:n:w:r:", long_options,
+ 	while ((c = getopt_long (argc, argv, "a:p:d:l:n:w:r:", long_options,

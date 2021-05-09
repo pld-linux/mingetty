@@ -1,7 +1,7 @@
-diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
---- mingetty-1.07.org/mingetty.8	2007-02-11 18:59:03.438623000 +0100
-+++ mingetty-1.07/mingetty.8	2007-02-11 19:00:32.962623000 +0100
-@@ -6,7 +6,7 @@
+diff -urNp -x '*.orig' mingetty-1.08.org/mingetty.8 mingetty-1.08/mingetty.8
+--- mingetty-1.08.org/mingetty.8	2021-05-09 20:16:02.173374609 +0200
++++ mingetty-1.08/mingetty.8	2021-05-09 20:16:02.210374609 +0200
+@@ -6,7 +6,7 @@ mingetty \- minimal getty for consoles
  [\-\-noclear] [\-\-nonewline] [\-\-noissue] [\-\-nohangup] [\-\-nohostname]
  [\-\-long\-hostname] [\-\-loginprog=/bin/login] [\-\-nice=10] [\-\-delay=5]
  [\-\-chdir=/home] [\-\-chroot=/chroot] [\-\-autologin username]
@@ -10,7 +10,7 @@ diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
  .I tty
  .PP
  .SH DESCRIPTION
-@@ -60,6 +61,9 @@
+@@ -61,6 +61,9 @@ Change into this directory before callin
  .B \-\-chroot /chroot
  Call chroot() with this directory name.
  .TP
@@ -20,10 +20,10 @@ diff -urN mingetty-1.07.org/mingetty.8 mingetty-1.07/mingetty.8
  .B \-\-autologin username
  Log the specified user automatically in without asking for
  a login name and password. Check the \-f option from
-diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
---- mingetty-1.07.org/mingetty.c	2007-02-11 18:58:43.434623000 +0100
-+++ mingetty-1.07/mingetty.c	2007-02-11 19:13:50.262623000 +0100
-@@ -96,6 +96,8 @@
+diff -urNp -x '*.orig' mingetty-1.08.org/mingetty.c mingetty-1.08/mingetty.c
+--- mingetty-1.08.org/mingetty.c	2021-05-09 20:16:02.173374609 +0200
++++ mingetty-1.08/mingetty.c	2021-05-09 20:16:02.210374609 +0200
+@@ -98,6 +98,8 @@ static int loginpause = 0;
  static int mode = K_RAW;
  /* Set mono terminal type */
  static int mono_term = 0;
@@ -32,7 +32,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  
  /* error() - output error messages */
  static void error (const char *fmt, ...)
-@@ -299,6 +301,27 @@
+@@ -301,6 +303,27 @@ static void output_special_char (unsigne
  	}
  }
  
@@ -60,7 +60,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  /* do_prompt - show login prompt, optionally preceded by /etc/issue contents */
  static void do_prompt (int showlogin)
  {
-@@ -318,8 +341,13 @@
+@@ -324,8 +347,13 @@ static void do_prompt (int showlogin)
  	}
  	if (nohostname == 0)
  		printf ("%s ", hn);
@@ -76,7 +76,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  	fflush (stdout);
  }
  
-@@ -372,6 +400,8 @@
+@@ -378,6 +406,8 @@ static char *get_logname (void)
  
  			*bp++ = c;
  		}
@@ -85,7 +85,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  	}
  
  	if (!ascii && (ic = iconv_open("WCHAR_T", "UTF-8"))) {
-@@ -403,7 +433,7 @@
+@@ -409,7 +439,7 @@ static void usage (void)
  		"[--nohangup] [--nohostname] [--long-hostname] "
  		"[--loginprog=/bin/login] [--nice=10] [--delay=10] "
  		"[--chdir=/home] [--chroot=/chroot] [--autologin=user] "
@@ -94,15 +94,15 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  		"tty' with e.g. tty=tty1", progname);
  }
  
-@@ -411,6 +441,7 @@
- 	{ "autologin", required_argument, NULL, 'a' },
+@@ -418,6 +448,7 @@ static struct option const long_options[
+ 	{ "loginpause", no_argument, &loginpause, 'p' },
  	{ "chdir", required_argument, NULL, 'w' },
  	{ "chroot", required_argument, NULL, 'r' },
 +	{ "defaultlogin", required_argument, NULL, 'u'},
  	{ "delay", required_argument, NULL, 'd' },
  	{ "noclear", no_argument, &noclear, 1 },
  	{ "nonewline", no_argument, &nonewline, 1 },
-@@ -467,6 +498,9 @@
+@@ -474,6 +505,9 @@ int main (int argc, char **argv)
  		case 'r':
  			ch_root = optarg;
  			break;
@@ -112,7 +112,7 @@ diff -urN mingetty-1.07.org/mingetty.c mingetty-1.07/mingetty.c
  		case 'w':
  			ch_dir = optarg;
  			break;
-@@ -491,9 +525,15 @@
+@@ -498,9 +532,15 @@ int main (int argc, char **argv)
  		do_prompt (0);
  		printf ("login: %s (automatic login)\n", autologin);
  		logname = autologin;
